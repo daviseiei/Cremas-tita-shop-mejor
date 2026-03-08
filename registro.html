@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro | Cremas Tita Shop</title>
+  <style>
+    :root { --bg:#fff8f2; --card:#fff; --ink:#2e2623; --brand:#8a5a44; --line:#ecd9cc; --ok:#1d7a46; }
+    * { box-sizing:border-box; margin:0; padding:0; font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif; }
+    body { background:var(--bg); color:var(--ink); min-height:100vh; display:grid; place-items:center; padding:16px; }
+    .box { width:100%; max-width:430px; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px; box-shadow:0 8px 18px rgba(0,0,0,.06); }
+    h1 { color:var(--brand); margin-bottom:8px; font-size:1.5rem; }
+    .sub { color:#6e5d55; margin-bottom:12px; }
+    .field { margin-top:10px; }
+    .field label { display:block; margin-bottom:4px; font-size:.9rem; }
+    .field input { width:100%; border:1px solid var(--line); border-radius:8px; padding:10px; }
+    .btn { width:100%; margin-top:12px; border:none; border-radius:9px; padding:11px; cursor:pointer; font-weight:700; background:var(--brand); color:#fff; }
+    .ok { margin-top:10px; font-size:.9rem; color:var(--ok); }
+    .links { margin-top:12px; display:flex; justify-content:space-between; font-size:.9rem; }
+    a { color:var(--brand); text-decoration:none; font-weight:700; }
+      @media (max-width:390px) {
+      body { padding:10px; }
+      .box { padding:14px; border-radius:10px; }
+      h1 { font-size:1.3rem; }
+      .sub { font-size:.9rem; }
+      .field input { font-size:16px; }
+      .btn { padding:12px 10px; }
+      .links { flex-direction:column; gap:8px; }
+    }
+    @media (max-width:360px) {
+      .box { padding:12px; }
+      .ok { font-size:.85rem; }
+    }</style>
+</head>
+<body>
+  <div class="box">
+    <h1>Registro</h1>
+    <p class="sub">Crea tu cuenta para futuras compras.</p>
+
+    <div class="field"><label for="regNombre">Nombre</label><input id="regNombre" type="text" placeholder="Tu nombre" /></div>
+    <div class="field"><label for="regEmail">Correo</label><input id="regEmail" type="email" placeholder="tu@email.com" /></div>
+    <div class="field"><label for="regPass">Contrasena</label><input id="regPass" type="password" placeholder="********" /></div>
+    <div class="field"><label for="regPass2">Repetir contrasena</label><input id="regPass2" type="password" placeholder="********" /></div>
+
+    <button class="btn" id="registerBtn">Crear cuenta</button>
+    <p class="ok" id="regMsg"></p>
+
+    <div class="links">
+      <a href="login.html">Ya tengo cuenta</a>
+      <a href="index.html">Volver tienda</a>
+    </div>
+  </div>
+
+  <script>
+    const USERS_KEY = "cremas_users";
+
+    const regNombre = document.getElementById("regNombre");
+    const regEmail = document.getElementById("regEmail");
+    const regPass = document.getElementById("regPass");
+    const regPass2 = document.getElementById("regPass2");
+    const registerBtn = document.getElementById("registerBtn");
+    const regMsg = document.getElementById("regMsg");
+
+    function getUsers() {
+      try { return JSON.parse(localStorage.getItem(USERS_KEY) || "[]"); } catch (_) { return []; }
+    }
+
+    function saveUsers(users) {
+      localStorage.setItem(USERS_KEY, JSON.stringify(users));
+    }
+
+    registerBtn.addEventListener("click", () => {
+      const nombre = regNombre.value.trim();
+      const email = regEmail.value.trim().toLowerCase();
+      const pass = regPass.value.trim();
+      const pass2 = regPass2.value.trim();
+
+      if (!nombre || !email || !pass || !pass2) {
+        alert("Completa todos los campos.");
+        return;
+      }
+
+      if (pass !== pass2) {
+        alert("Las contrasenas no coinciden.");
+        return;
+      }
+
+      const users = getUsers();
+      if (users.some((u) => u.email === email)) {
+        alert("Ese correo ya esta registrado.");
+        return;
+      }
+
+      users.push({ nombre, email, pass });
+      saveUsers(users);
+
+      regMsg.textContent = "Cuenta creada correctamente. Redirigiendo a login...";
+      setTimeout(() => { window.location.href = "login.html"; }, 900);
+    });
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crema Reparadora | Cremas Tita Shop</title>
+  <style>
+    body { font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif; background:#fff8f2; margin:0; color:#2e2623; }
+    .wrap { max-width:980px; margin:0 auto; padding:24px 16px 40px; }
+    .back { display:inline-block; margin-bottom:16px; color:#8a5a44; text-decoration:none; font-weight:700; }
+    .grid { display:grid; grid-template-columns:1.1fr 1fr; gap:18px; }
+    .photo,.info { background:#fff; border:1px solid #ecd9cc; border-radius:12px; }
+    .photo { padding:10px; }
+    .photo img { width:100%; border-radius:8px; display:block; }
+    .info { padding:16px; }
+    h1,h2 { color:#8a5a44; }
+    h2 { margin:14px 0 8px; }
+    ul { padding-left:20px; }
+    .actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:14px; }
+    .btn { border-radius:10px; padding:10px; font-weight:700; cursor:pointer; }
+    .add { border:1px solid #8a5a44; background:#fff; color:#8a5a44; }
+    .buy { border:none; background:#8a5a44; color:#fff; }
+    @media (max-width:900px){ .grid{grid-template-columns:1fr;} .actions{grid-template-columns:1fr;} }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back" href="index.html">Volver a productos</a>
+    <div class="grid">
+      <section class="photo"><img src="img/reparadora.jpg" alt="Foto Crema Reparadora" /></section>
+      <section class="info">
+        <h1>Crema Reparadora</h1>
+        <h2>Descripcion</h2>
+        <p>Descripcion pendiente: aqui puedes colocar beneficios, tipo de piel ideal, textura, aroma y modo de uso.</p>
+        <h2>Ingredientes</h2>
+        <ul><li>Ingrediente 1</li><li>Ingrediente 2</li><li>Ingrediente 3</li><li>Ingrediente 4</li></ul>
+        <div class="actions"><button class="btn add" id="addBtn">Anadir al carrito</button><button class="btn buy" id="buyBtn">Comprar ahora</button></div>
+      </section>
+    </div>
+  </div>
+  <script>
+    const CART_KEY = "cremas_cart";
+    const product = { name: "Crema Reparadora", price: 18 };
+    function addProduct() {
+      let cart = [];
+      try { cart = JSON.parse(localStorage.getItem(CART_KEY) || "[]"); } catch (_) {}
+      const ex = cart.find((i) => i.name === product.name);
+      if (ex) ex.qty += 1; else cart.push({ name: product.name, price: product.price, qty: 1 });
+      localStorage.setItem(CART_KEY, JSON.stringify(cart));
+    }
+    document.getElementById("addBtn").addEventListener("click", () => { addProduct(); alert("Producto anadido al carrito."); });
+    document.getElementById("buyBtn").addEventListener("click", () => { addProduct(); window.location.href = "checkout.html"; });
+  </script>
+</body>
+</html>
+

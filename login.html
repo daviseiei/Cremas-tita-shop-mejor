@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar sesion | Cremas Tita Shop</title>
+  <style>
+    :root { --bg:#fff8f2; --card:#fff; --ink:#2e2623; --brand:#8a5a44; --line:#ecd9cc; --ok:#1d7a46; }
+    * { box-sizing:border-box; margin:0; padding:0; font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif; }
+    body { background:var(--bg); color:var(--ink); min-height:100vh; display:grid; place-items:center; padding:16px; }
+    .box { width:100%; max-width:430px; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px; box-shadow:0 8px 18px rgba(0,0,0,.06); }
+    h1 { color:var(--brand); margin-bottom:8px; font-size:1.5rem; }
+    .sub { color:#6e5d55; margin-bottom:12px; }
+    .field { margin-top:10px; }
+    .field label { display:block; margin-bottom:4px; font-size:.9rem; }
+    .field input { width:100%; border:1px solid var(--line); border-radius:8px; padding:10px; }
+    .remember { margin-top:12px; display:flex; align-items:center; gap:8px; font-size:.9rem; color:#5d4f49; }
+    .btn { width:100%; margin-top:12px; border:none; border-radius:9px; padding:11px; cursor:pointer; font-weight:700; }
+    .btn-main { background:var(--brand); color:#fff; }
+    .btn-out { background:#fff; color:var(--brand); border:1px solid var(--brand); }
+    .ok { margin-top:10px; font-size:.9rem; color:var(--ok); }
+    .links { margin-top:12px; display:flex; justify-content:space-between; font-size:.9rem; }
+    a { color:var(--brand); text-decoration:none; font-weight:700; }
+      @media (max-width:390px) {
+      body { padding:10px; }
+      .box { padding:14px; border-radius:10px; }
+      h1 { font-size:1.3rem; }
+      .sub { font-size:.9rem; }
+      .field input { font-size:16px; }
+      .btn { padding:12px 10px; }
+      .links { flex-direction:column; gap:8px; }
+    }
+    @media (max-width:360px) {
+      .box { padding:12px; }
+      .remember { font-size:.86rem; }
+      .ok { font-size:.85rem; }
+    }</style>
+</head>
+<body>
+  <div class="box">
+    <h1>Iniciar sesion</h1>
+    <p class="sub">Accede con tu cuenta.</p>
+
+    <div class="field"><label for="loginEmail">Correo</label><input id="loginEmail" type="email" placeholder="tu@email.com" /></div>
+    <div class="field"><label for="loginPass">Contrasena</label><input id="loginPass" type="password" placeholder="********" /></div>
+
+    <label class="remember"><input type="checkbox" id="rememberMe" /> Recordar cuenta en este dispositivo</label>
+
+    <button class="btn btn-main" id="loginBtn">Entrar</button>
+    <button class="btn btn-out" id="logoutBtn" type="button">Cerrar sesion</button>
+    <p class="ok" id="loginMsg"></p>
+
+    <div class="links">
+      <a href="registro.html">Crear cuenta</a>
+      <a href="index.html">Volver tienda</a>
+    </div>
+  </div>
+
+  <script>
+    const USERS_KEY = "cremas_users";
+    const SESSION_KEY = "cremas_session";
+    const REMEMBER_KEY = "cremas_remember_email";
+
+    const loginEmail = document.getElementById("loginEmail");
+    const loginPass = document.getElementById("loginPass");
+    const rememberMe = document.getElementById("rememberMe");
+    const loginBtn = document.getElementById("loginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const loginMsg = document.getElementById("loginMsg");
+
+    function getUsers() {
+      try { return JSON.parse(localStorage.getItem(USERS_KEY) || "[]"); } catch (_) { return []; }
+    }
+
+    function clearSession() {
+      localStorage.removeItem(SESSION_KEY);
+      sessionStorage.removeItem(SESSION_KEY);
+    }
+
+    function loadHints() {
+      const remembered = localStorage.getItem(REMEMBER_KEY);
+      if (remembered) {
+        loginEmail.value = remembered;
+        rememberMe.checked = true;
+      }
+      try {
+        const s = JSON.parse(sessionStorage.getItem(SESSION_KEY) || localStorage.getItem(SESSION_KEY) || "null");
+        if (s && s.email) loginMsg.textContent = `Sesion activa: ${s.nombre}`;
+      } catch (_) {}
+    }
+
+    loginBtn.addEventListener("click", () => {
+      const email = loginEmail.value.trim().toLowerCase();
+      const pass = loginPass.value.trim();
+      const users = getUsers();
+      const user = users.find((u) => u.email === email && u.pass === pass);
+
+      if (!user) {
+        alert("Correo o contrasena incorrectos.");
+        return;
+      }
+
+      clearSession();
+      const sessionData = JSON.stringify({ nombre: user.nombre, email: user.email });
+      if (rememberMe.checked) {
+        localStorage.setItem(SESSION_KEY, sessionData);
+        localStorage.setItem(REMEMBER_KEY, user.email);
+      } else {
+        sessionStorage.setItem(SESSION_KEY, sessionData);
+        localStorage.removeItem(REMEMBER_KEY);
+      }
+
+      loginMsg.textContent = "Sesion iniciada correctamente.";
+      setTimeout(() => { window.location.href = "index.html"; }, 500);
+    });
+
+    logoutBtn.addEventListener("click", () => {
+      clearSession();
+      localStorage.removeItem(REMEMBER_KEY);
+      loginMsg.textContent = "Sesion cerrada.";
+    });
+
+    loadHints();
+  </script>
+</body>
+</html>
+

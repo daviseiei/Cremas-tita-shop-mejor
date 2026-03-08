@@ -1,0 +1,252 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout | Cremas Tita Shop</title>
+  <style>
+    :root { --bg:#fff8f2; --card:#fff; --ink:#2e2623; --brand:#8a5a44; --brand2:#b87a58; --line:#ecd9cc; --ok:#1d7a46; }
+    * { box-sizing:border-box; margin:0; padding:0; font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif; }
+    body { background:var(--bg); color:var(--ink); line-height:1.45; }
+    .topbar { background:#fff; border-bottom:1px solid var(--line); padding:10px 16px; }
+    .topbar-inner { max-width:1100px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:10px; }
+    .logo { font-weight:800; color:var(--brand); text-decoration:none; }
+    .back-link { color:var(--brand); text-decoration:none; font-weight:700; }
+    .hero { max-width:1100px; margin:18px auto 0; padding:0 16px; }
+    .steps { display:flex; gap:8px; flex-wrap:wrap; }
+    .step { background:#fff; border:1px solid var(--line); border-radius:999px; padding:7px 12px; font-size:.85rem; color:#6d5a52; }
+    .step.active { border-color:var(--brand); color:var(--brand); font-weight:700; }
+    .layout { max-width:1100px; margin:14px auto 40px; padding:0 16px; display:grid; grid-template-columns:1.2fr .8fr; gap:14px; }
+    .panel { background:#fff; border:1px solid var(--line); border-radius:14px; box-shadow:0 8px 16px rgba(0,0,0,.05); padding:16px; }
+    .panel h2 { color:var(--brand); margin-bottom:8px; }
+    .muted { color:#6f5e56; font-size:.92rem; }
+    .field { margin-top:10px; }
+    .field label { display:block; font-size:.88rem; margin-bottom:4px; }
+    .field input, .field textarea { width:100%; border:1px solid var(--line); border-radius:10px; padding:10px; background:#fff; }
+    .field textarea { min-height:64px; resize:vertical; }
+    
+    .secure-box { margin-top:12px; border:1px solid var(--line); border-radius:10px; padding:10px; background:#fffaf6; }
+    .secure-box p { font-size:.9rem; color:#6b5c55; }
+    .confirm-btn { width:100%; margin-top:12px; border:none; border-radius:11px; padding:12px; background:linear-gradient(120deg,var(--brand),var(--brand2)); color:#fff; font-weight:800; cursor:pointer; }
+    .confirm-btn:disabled { opacity:.6; cursor:not-allowed; }
+    .ok { margin-top:10px; color:var(--ok); font-weight:700; font-size:.92rem; }
+    .summary-list { border-top:1px solid var(--line); border-bottom:1px solid var(--line); max-height:280px; overflow:auto; margin:10px 0; }
+    .summary-row { display:flex; justify-content:space-between; gap:8px; padding:9px 0; border-bottom:1px dashed #f0e4dc; }
+    .totals p { display:flex; justify-content:space-between; margin:4px 0; }
+    .total-final { color:var(--brand); font-weight:800; font-size:1.08rem; }
+    @media (max-width:900px) { .layout { grid-template-columns:1fr; } }
+    @media (max-width:760px) {
+      .topbar { padding:10px 12px; }
+      .topbar-inner { flex-direction:column; align-items:flex-start; gap:8px; }
+      .hero { margin-top:12px; }
+      .steps { gap:6px; }
+      .step { font-size:.78rem; padding:6px 10px; }
+      .panel { padding:12px; }
+      .confirm-btn { padding:11px; }
+    }
+      @media (max-width:390px) {
+      .topbar-inner { align-items:stretch; }
+      .back-link { font-size:.9rem; }
+      .step { font-size:.74rem; padding:5px 8px; }
+      .panel h2 { font-size:1.1rem; }
+      .field input, .field textarea { font-size:16px; }
+      .confirm-btn { padding:12px 10px; }
+      .summary-row strong { font-size:.96rem; }
+    }
+    @media (max-width:360px) {
+      .topbar { padding:8px 10px; }
+      .hero { padding:0 10px; }
+      .layout { padding:0 10px; gap:10px; }
+      .panel { padding:10px; }
+      .muted { font-size:.86rem; }
+    }</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a class="logo" href="index.html">Cremas Tita Shop</a>
+      <a class="back-link" href="index.html">Volver a la tienda</a>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="steps"><span class="step">Carrito</span><span class="step active">Pago</span><span class="step">Confirmacion</span></div>
+  </section>
+
+  <main class="layout">
+    <section class="panel">
+      <h2>Finalizar compra</h2>
+      <p class="muted">Tus datos de envio se guardan para agilizar futuras compras.</p>
+
+      <div class="field"><label for="clienteNombre">Nombre</label><input id="clienteNombre" type="text" placeholder="Tu nombre" /></div>
+      <div class="field"><label for="clienteTelefono">Telefono</label><input id="clienteTelefono" type="text" placeholder="Tu telefono" /></div>
+      <div class="field"><label for="clienteDireccion">Direccion</label><input id="clienteDireccion" type="text" placeholder="Direccion de entrega" /></div>
+      <div class="field"><label for="clienteNotas">Notas (opcional)</label><textarea id="clienteNotas" placeholder="Ej: entregar por la tarde"></textarea></div>
+
+      
+      <div class="secure-box">
+        <p>Pago seguro con Stripe. Se aceptan tarjeta, Apple Pay y metodos compatibles segun dispositivo/navegador.</p>
+      </div>
+
+      <button class="confirm-btn" id="confirmPay">Ir al pago seguro</button>
+      <p class="ok" id="okMsg" style="display:none;"></p>
+    </section>
+
+    <aside class="panel">
+      <h2>Resumen del pedido</h2>
+      <p class="muted" id="guestInfo"></p>
+      <div class="summary-list" id="summaryList"></div>
+      <div class="totals">
+        <p><span>Subtotal</span><span>€<span id="subtotal">0.00</span></span></p>
+        <p><span>Envio</span><span>€<span id="shipping">2.00</span></span></p>
+        <p class="total-final"><span>Total</span><span>€<span id="total">0.00</span></span></p>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    const STORAGE = { cart: "cremas_cart", customer: "cremas_customer", session: "cremas_session" };
+    const CONFIG = {
+      costoEnvio: 2,
+      stripeApiBase: localStorage.getItem("stripe_api_base") || "http://localhost:8787"
+    };
+
+    const cart = [];
+
+    const summaryList = document.getElementById("summaryList");
+    const subtotalEl = document.getElementById("subtotal");
+    const shippingEl = document.getElementById("shipping");
+    const totalEl = document.getElementById("total");
+    const guestInfo = document.getElementById("guestInfo");
+
+    const clienteNombre = document.getElementById("clienteNombre");
+    const clienteTelefono = document.getElementById("clienteTelefono");
+    const clienteDireccion = document.getElementById("clienteDireccion");
+    const clienteNotas = document.getElementById("clienteNotas");
+    const confirmPay = document.getElementById("confirmPay");
+    const okMsg = document.getElementById("okMsg");
+
+    function getSession() {
+      try {
+        const s1 = sessionStorage.getItem(STORAGE.session);
+        const s2 = localStorage.getItem(STORAGE.session);
+        return JSON.parse(s1 || s2 || "null");
+      } catch (_) { return null; }
+    }
+
+    function saveCustomer() {
+      localStorage.setItem(STORAGE.customer, JSON.stringify({
+        nombre: clienteNombre.value,
+        telefono: clienteTelefono.value,
+        direccion: clienteDireccion.value,
+        notas: clienteNotas.value
+      }));
+    }
+
+    [clienteNombre, clienteTelefono, clienteDireccion, clienteNotas].forEach((el) => el.addEventListener("input", saveCustomer));
+
+    function loadInitialData() {
+      try {
+        const savedCart = JSON.parse(localStorage.getItem(STORAGE.cart) || "[]");
+        if (Array.isArray(savedCart)) cart.push(...savedCart);
+      } catch (_) {}
+
+      const session = getSession();
+      guestInfo.textContent = session && session.nombre ? `Cuenta: ${session.nombre}` : "Compra sin cuenta";
+
+      try {
+        const d = JSON.parse(localStorage.getItem(STORAGE.customer) || "{}");
+        clienteNombre.value = d.nombre || (session?.nombre || "");
+        clienteTelefono.value = d.telefono || "";
+        clienteDireccion.value = d.direccion || "";
+        clienteNotas.value = d.notas || "";
+      } catch (_) {}
+    }
+
+    function getSubtotal() {
+      return cart.reduce((acc, item) => acc + item.price * item.qty, 0);
+    }
+
+    function renderSummary() {
+      summaryList.innerHTML = "";
+      if (!cart.length) {
+        summaryList.innerHTML = '<p style="padding:10px 0;color:#756660;">Tu carrito esta vacio. Vuelve a la tienda.</p>';
+        confirmPay.disabled = true;
+      }
+
+      cart.forEach((item) => {
+        const row = document.createElement("div");
+        row.className = "summary-row";
+        row.innerHTML = `<div><strong>${item.name}</strong><br><small>x${item.qty}</small></div><strong>€${(item.price * item.qty).toFixed(2)}</strong>`;
+        summaryList.appendChild(row);
+      });
+
+      const subtotal = getSubtotal();
+      const shipping = cart.length ? CONFIG.costoEnvio : 0;
+      const total = subtotal + shipping;
+
+      subtotalEl.textContent = subtotal.toFixed(2);
+      shippingEl.textContent = shipping.toFixed(2);
+      totalEl.textContent = total.toFixed(2);
+    }
+
+    function validarCliente() {
+      if (!clienteNombre.value.trim() || !clienteTelefono.value.trim() || !clienteDireccion.value.trim()) {
+        alert("Completa nombre, telefono y direccion.");
+        return false;
+      }
+      return true;
+    }
+
+    async function crearCheckoutStripe() {
+      if (!cart.length) return;
+      if (!validarCliente()) return;
+
+      if (!window.location.origin || window.location.origin === "null") {
+        alert("Para Stripe necesitas abrir la web en http/https (no file://).");
+        return;
+      }
+
+      confirmPay.disabled = true;
+      okMsg.style.display = "block";
+      okMsg.textContent = "Conectando con Stripe...";
+
+      try {
+        const response = await fetch(`${CONFIG.stripeApiBase}/create-checkout-session`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            cart,
+            customer: {
+              nombre: clienteNombre.value.trim(),
+              telefono: clienteTelefono.value.trim(),
+              direccion: clienteDireccion.value.trim(),
+              notas: clienteNotas.value.trim()
+            },
+            successUrl: `${window.location.origin}/checkout-success.html?session_id={CHECKOUT_SESSION_ID}`,
+            cancelUrl: `${window.location.origin}/checkout-cancel.html`
+          })
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.error || "No se pudo iniciar Stripe Checkout");
+        }
+
+        window.location.href = data.url;
+      } catch (error) {
+        okMsg.textContent = `Error: ${error.message}`;
+        confirmPay.disabled = false;
+      }
+    }
+
+    confirmPay.addEventListener("click", crearCheckoutStripe);
+
+    loadInitialData();
+    renderSummary();
+  </script>
+</body>
+</html>
+
+
+

@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pago exitoso | Cremas Tita Shop</title>
+  <style>
+    body { font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif; background:#fff8f2; margin:0; color:#2e2623; display:grid; place-items:center; min-height:100vh; padding:16px; }
+    .box { max-width:520px; width:100%; background:#fff; border:1px solid #ecd9cc; border-radius:14px; padding:20px; text-align:center; }
+    h1 { color:#8a5a44; margin-bottom:8px; }
+    p { color:#5f514a; }
+    .btn { margin-top:14px; display:inline-block; text-decoration:none; background:#8a5a44; color:#fff; padding:10px 14px; border-radius:10px; font-weight:700; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>Pago realizado correctamente</h1>
+    <p>Tu pedido ha sido confirmado. Gracias por comprar en Cremas Tita Shop.</p>
+    <a class="btn" href="index.html">Volver a la tienda</a>
+  </div>
+  <script>
+    localStorage.removeItem("cremas_cart");
+  </script>
+</body>
+</html>
